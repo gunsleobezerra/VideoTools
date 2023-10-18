@@ -17,13 +17,13 @@ def transcreve_audio(audio_name:str,aditional_args:str="",forGPT:bool=False):
     audio = r.record(source)  
   try:
     texto = r.recognize_google(audio,language='pt-BR')
-    print('Google Speech Recognition: ' + texto)
+    #print('Google Speech Recognition: ' + texto)
   except sr.UnknownValueError:
     texto = ''
-    print('Google Speech Recognition NÃO ENTENDEU o audio')
+    #print('Google Speech Recognition NÃO ENTENDEU o audio')
   except sr.RequestError as e:
     texto = ''
-    print('Erro ao solicitar resultados do Google Speech Recognition; {0}'.format(e))
+    #print('Erro ao solicitar resultados do Google Speech Recognition; {0}'.format(e))
   finally:
     try:
         os.remove(audio_name)
