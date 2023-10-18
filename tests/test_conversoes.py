@@ -7,12 +7,12 @@ class TestConversoes(unittest.TestCase):
     #printando path
     print(os.path.relpath("./teste.mp4"))
 
+    #setup
 
-
-    def test_mp4_to_mp3(self):
+    def test_1_mp4_to_mp3(self):
         self.assertNotEqual(converter(os.path.relpath('tests/teste.mp4'),"mp4","mp3"),None)
 
-    def test_mp3_to_wav(self):
+    def test_2_mp3_to_wav(self):
         self.assertNotEqual(converter(os.path.relpath('tests/teste.mp3'),"mp3","wav"),None)
 
     
