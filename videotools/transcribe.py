@@ -80,5 +80,5 @@ def geratexto(chunks_path:str, chunk_size:int=timechunk, forGPT:bool=False):
     print(text_dict)
     # print(text_dict)
     for key in sorted(text_dict.keys()):
-        text+= calcula_tempo(key)+" -- "+text_dict[key]+"\n"
+        text+= calcula_tempo(key)+" -- "+text_dict[key]+"\n\n"
     return text

@@ -3,7 +3,7 @@ from pydub.utils import make_chunks
 from tqdm import tqdm
 import os
 
-timechunk = 3000
+timechunk = 30000
 
 def makeChunks(arquivo:str,destino:str=".",chunk_size:int=timechunk,destinoNome:str="./chunks"):
     #pegar o nome do arquivo sem a pasta

@@ -11,8 +11,13 @@ def converter(arquivo:str,formSource:str,formDest:str,destino:str="."):
     #pegar o nome do arquivo sem a pasta
     nomeArquivo = arquivo
 
+    #pegar o nome do arquivo sem a pasta
+    if(os.name == 'nt'):
+        nomeArquivoS = arquivo.split("\\")[-1]
+    else:
+        nomeArquivoS = arquivo.split("/")[-1]
     
-
+    print("nomeArquivoS: ",nomeArquivoS)    
 
 
 
@@ -31,14 +36,15 @@ def converter(arquivo:str,formSource:str,formDest:str,destino:str="."):
 
             clip = mp.VideoFileClip(arquivo).subclip()
             print("Convertendo...")
-            clip.audio.write_audiofile(os.path.join(destino,nomeArquivo.split(".")[0]+"."+formDest))
+            clip.audio.write_audiofile(os.path.join(destino,nomeArquivoS.split(".")[0]+"."+formDest))
 
             print("Arquivo convertido com sucesso!")
 
             return clip
         except Exception as e:
             print("Erro ao converter arquivo: ",e)
-            return None
+            raise e
+            
 
             
     elif(formSource == "mp3" and formDest == "wav"):
@@ -50,7 +56,7 @@ def converter(arquivo:str,formSource:str,formDest:str,destino:str="."):
             #pydub
             clip = AudioSegment.from_mp3(os.path.realpath(arquivo))
             print("Convertendo...")
-            clip.export(os.path.join(destino,nomeArquivo.split(".")[0]+"."+formDest), format="wav")
+            clip.export(os.path.join(destino,nomeArquivoS.split(".")[0]+"."+formDest), format="wav")
             print("Arquivo convertido com sucesso!")
             return clip
 
