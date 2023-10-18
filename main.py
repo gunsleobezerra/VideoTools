@@ -15,19 +15,19 @@ def main(args):
     
 
     #mp4_to_mp3(videoMp4,destino)
-    converter(videoMp4,"mp4","mp3", os.path.relpath(destino))
+    #converter(videoMp4,"mp4","mp3", os.path.relpath(destino))
 
     #mp3_to_wav(destino,destino)
-    converter(os.path.join(destino,"teste.mp3"),"mp3","wav", os.path.relpath(destino))
+    #converter(os.path.join(destino,"teste.mp3"),"mp3","wav", os.path.relpath(destino))
 
     #criando chunks
     chunks.timechunk = 30000
-    chunks.makeChunks(os.path.join(destino,"teste.wav"),os.path.join(destino,"chunks"))
+    chunks.makeChunks(os.path.join(destino,"teste.wav"),destinoNome=os.path.join(destino,"chunks"))
 
     #transcrevendo
 
     with open(os.path.join(destino,"transcricao.txt"),"w") as f:
-        f.write(transcreve_audio(os.path.join(destino,"teste.wav"),forGPT=True))
+        f.write(geratexto(os.path.join(destino,"chunks")))
 
     ...
 

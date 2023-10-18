@@ -27,10 +27,10 @@ def transcreve_audio(audio_name:str,aditional_args:str="",forGPT:bool=False):
   finally:
     try:
         os.remove(audio_name)
-        if(os.name == 'nt'):
-            os.system("cls")
-        else:
-            os.system("clear")
+        # if(os.name == 'nt'):
+        #     os.system("cls")
+        # else:
+        #     os.system("clear")
     except:
         print('Arquivo não existe')    
     

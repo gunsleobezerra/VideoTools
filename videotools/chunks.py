@@ -17,9 +17,11 @@ def makeChunks(arquivo:str,destino:str=".",chunk_size:int=timechunk,destinoNome:
     chunks = make_chunks(clip, chunk_size)
 
     #apaga todos os arquivos da pasta
-
-    for file in os.listdir(destinoNome):
-        os.remove(os.path.join(destinoNome,file))
+    try:
+        for file in os.listdir(destinoNome):
+            os.remove(os.path.join(destinoNome,file))
+    except:
+        pass
     if not os.path.exists(destinoNome):
         os.makedirs(destinoNome)
 
