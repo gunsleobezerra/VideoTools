@@ -1,9 +1,7 @@
-import moviepy.editor as mp
-import speech_recognition as sr
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 from tqdm import tqdm
-import os, sys
+import os
 
 def makeChunks(arquivo:str,destino:str=".",chunk_size:int=30000,destinoNome:str="./chunks"):
     #pegar o nome do arquivo sem a pasta
@@ -16,8 +14,15 @@ def makeChunks(arquivo:str,destino:str=".",chunk_size:int=30000,destinoNome:str=
     clip = AudioSegment.from_wav(os.path.realpath(arquivo))
     chunks = make_chunks(clip, chunk_size)
 
+    #apaga todos os arquivos da pasta
+
+    for file in os.listdir(destinoNome):
+        os.remove(os.path.join(destinoNome,file))
     if not os.path.exists(destinoNome):
         os.makedirs(destinoNome)
+
+
+
 
     # Export all of the individual chunks as wav files
     for i, chunk in tqdm(enumerate(chunks)):
