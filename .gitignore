@@ -123,3 +123,7 @@ venv.bak/
 .mypy_cache/
 .dmypy.json
 dmypy.json
+
+#mp3 wav in tests
+*.mp3
+*.wav
