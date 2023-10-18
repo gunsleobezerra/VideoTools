@@ -3,7 +3,9 @@ from pydub.utils import make_chunks
 from tqdm import tqdm
 import os
 
-def makeChunks(arquivo:str,destino:str=".",chunk_size:int=30000,destinoNome:str="./chunks"):
+timechunk = 3000
+
+def makeChunks(arquivo:str,destino:str=".",chunk_size:int=timechunk,destinoNome:str="./chunks"):
     #pegar o nome do arquivo sem a pasta
     nomeArquivo = arquivo
     print("Dividindo arquivo em chunks de ",chunk_size,"ms...")
@@ -23,11 +25,13 @@ def makeChunks(arquivo:str,destino:str=".",chunk_size:int=30000,destinoNome:str=
 
 
 
-
+    time=0
     # Export all of the individual chunks as wav files
     for i, chunk in tqdm(enumerate(chunks)):
-        chunk_name = os.path.join(destinoNome,"_chunk{0}.wav".format(i))
+        
+        chunk_name = os.path.join(destinoNome,f"_chunk_ms_{time}.wav".format(i))
         print("exporting", chunk_name)
         chunk.export(chunk_name, format="wav")
+        time+=chunk_size
     print("Arquivo dividido com sucesso!")
     return chunks

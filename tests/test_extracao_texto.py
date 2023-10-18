@@ -12,7 +12,7 @@ class TestChunks(unittest.TestCase):
     #setup
 
     def test_dividir_chunks(self):
-        self.assertNotEqual(makeChunks(os.path.relpath('tests/teste.wav'),chunk_size=30000),None)
+        self.assertNotEqual(makeChunks(os.path.relpath('tests/teste.wav')),None)
 
 
 class TestGeracaodeTexto(unittest.TestCase):
@@ -22,17 +22,25 @@ class TestGeracaodeTexto(unittest.TestCase):
     
         #setup
     
-        def test_transcricao(self):
+        def test_transcricao_unitaria(self):
             text=""""""
             chunkpath = os.path.relpath("./chunks")
             chunklist = os.listdir(os.path.relpath("./chunks"))
-            for sound in chunklist:
-                text+=transcreve_audio(os.path.join(chunkpath,sound))
+            for sound in chunklist[:1]:
+                text+="\n"+transcreve_audio(os.path.join(chunkpath,sound))
             #write text to file
-            with open("transcricao.txt","w") as f:
+            with open(os.path.relpath("tests/transcricao.txt"),"w") as f:
+                #write using utf-8
                 f.write(text)
             self.assertNotEqual(text,"")
             ...
+        
+        def test_gera_texto_completo(self):
+            with open(os.path.relpath("tests/transcricaoCOMPLETA.txt"),"w") as f:
+                #write using utf-8
+                f.write(geratexto(os.path.relpath("./chunks")))
+             
+            pass
 
     
 
