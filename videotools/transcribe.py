@@ -9,14 +9,14 @@ import os, sys
 
 from .chunks import timechunk
 
-def transcreve_audio(audio_name:str,aditional_args:str="",forGPT:bool=False):
+def transcreve_audio(audio_name:str,aditional_args:str="",forGPT:bool=False,leng="pt-BR"):
    #windows
   
   r = sr.Recognizer()
   with sr.AudioFile(audio_name) as source:
     audio = r.record(source)  
   try:
-    texto = r.recognize_google(audio,language='pt-BR')
+    texto = r.recognize_google(audio,language=leng)
     #print('Google Speech Recognition: ' + texto)
   except sr.UnknownValueError:
     texto = ''
@@ -62,17 +62,29 @@ def calcula_tempo(MS:int):
 #     return text
 
 #multiprocessing
+def transcreve_audio_kwargs(x):
+       return transcreve_audio(**x)
 
-def geratexto(chunks_path:str, chunk_size:int=timechunk, forGPT:bool=False):
+def geratexto(chunks_path:str, chunk_size:int=timechunk, forGPT:bool=False,leng="pt-BR"):
     timeMS=0
     text=""""""
     text_dict = {}
     chunklist = os.listdir(chunks_path)
     total_time = len(chunklist)*chunk_size
     print(chunklist)
+    
     #example chunk name : _chunk_ms_147000.wav
+
+    # transcreve_audio
+    #args : {audio_name:str,aditional_args:str="",forGPT:bool=False,leng="pt-BR"}
+
+    # *[*{audio_name:v , leng:leng}  for v in [os.path.join(chunks_path,sound) for sound in chunklist]]
+
+    args = [ {"audio_name":v , "leng":leng}  for v in [os.path.join(chunks_path,sound) for sound in chunklist]]
+    
+    print(args)
     with Pool() as pool:
-        results = list(tqdm(pool.imap(transcreve_audio, [os.path.join(chunks_path,sound) for sound in chunklist]), total=len(chunklist)))
+        results = list(tqdm(pool.imap(transcreve_audio_kwargs ,args ), total=len(chunklist)))
         for i, data in enumerate(results):
             chunkMS = int(chunklist[i].split("_ms_")[1].split(".")[0])
             text_dict[chunkMS] = data
