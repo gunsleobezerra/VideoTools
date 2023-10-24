@@ -32,7 +32,7 @@ def main(args):
     #video path example: windows:  "C:\\Users\\User\\Desktop\\video.mp4" linux: "/home/user/video.mp4"
 
     video_name = os.path.splitext(videoMp4)[0]
-
+    video_name = video_name.split("/")[-1]
     print(video_name)
 
    
@@ -43,11 +43,11 @@ def main(args):
     converter(videoMp4,"mp4","mp3", os.path.relpath(destino))
 
     #mp3_to_wav(destino,destino)
-    converter(os.path.join(destino,"teste.mp3"),"mp3","wav", os.path.relpath(destino))
+    converter(os.path.join(destino,video_name+".mp3"),"mp3","wav", os.path.relpath(destino))
 
     #criando chunks
     
-    chunks.makeChunks(os.path.join(destino,"teste.wav"),chunk_size=timechunk,destinoNome=os.path.join(destino,"chunks"))
+    chunks.makeChunks(os.path.join(destino,video_name+".wav"),chunk_size=timechunk,destinoNome=os.path.join(destino,"chunks"))
 
     #transcrevendo
 
