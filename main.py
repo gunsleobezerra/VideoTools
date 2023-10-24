@@ -2,6 +2,7 @@ import os, sys
 from videotools.converter import *
 import videotools.chunks as chunks
 from videotools.transcribe import *
+from videotools.talkgpt import *
 import os
 import moviepy.editor as mp
 from pydub import AudioSegment
@@ -52,7 +53,26 @@ def main(args):
 
     with open(os.path.join(destino,"transcricao.txt"),"w") as f:
         f.write(geratexto(os.path.join(destino,"chunks"),leng=leng))
+    
 
+    #obtendo cortes
+    with open(os.path.join(destino,"transcricao.txt"),"r") as f:
+        texto=f.read()
+
+        resposta=""
+
+        while(resposta==""):
+            resposta =get_completion(f"""
+            Leia a transcrição abaixo e corte os tempos de acordo com o assunto (3 assuntos) retornando [t_inicial | t_final ] -  Assunto em {leng}
+            
+            transcrição:
+                            {texto}
+            """)
+
+    
+    with open(os.path.join(destino,"cortes.txt"),"w") as f:
+        f.write(resposta)
+        
     ...
 
 if __name__ == '__main__':
