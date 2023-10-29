@@ -78,16 +78,15 @@ def main(args_videotools):
 
     ARQUIVO_MP3 = os.path.join(destino,video_name+".mp3")
     leng_no_=leng.split("-")[0]
+    transcribe_py=os.path.realpath("videotools/transcribe.py")
+    os.system(f"python3 {transcribe_py} -mp3 {ARQUIVO_MP3} -lang {leng_no_} > {os.path.join(destino,'transcricao.txt')}")
 
-    texto = geratexto_whisper(ARQUIVO_MP3,leng_no_)
+    print("transcrição completa!! -- "+os.path.join(destino,'transcricao.txt'))
 
-    with open(os.path.join(destino,"transcricao.txt"),"w") as f:
-        f.write(texto["text"])
-    with open(os.path.join(destino,"transcricao.py"),"w") as f:
-        f.write(str(texto))
-
-    
-    
+    with open(os.path.join(destino,"transcricao.txt"),"r") as f:
+        texto=f.read()
+        
+    print("texto completo: "+texto)
         
     ...
 

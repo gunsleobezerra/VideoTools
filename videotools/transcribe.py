@@ -10,7 +10,7 @@ import whisper
 import argparse
 
 
-from .chunks import timechunk
+timechunk = 10000
 
 def transcreve_audio(audio_name:str,aditional_args:str="",forGPT:bool=False,leng="pt-BR"):
    #windows
@@ -128,7 +128,7 @@ def main():
 if __name__ == "__main__":
     
   import sys
-  sys.exit(main(sys.argv))
+  sys.exit(main())
 
   pass
 
