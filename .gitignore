@@ -132,7 +132,7 @@ dmypy.json
 transcricao.txt
 poetry.lock
 
-
+source/*
 source/cortes.txt
 poetry.lock
 source/transcricao.txt
