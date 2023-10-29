@@ -18,7 +18,7 @@ run_teste: poetry.lock
 run_teste_url: poetry.lock 
 	@echo "Running..."
 	poetry shell
-	python3 main.py -url https://www.youtube.com/watch?v=eS1dWWz9cO0 -d source -as 3
+	python3 main.py -url https://www.youtube.com/watch?v=HsbvMexL1C80 -d source -as 3
 
 generate_help: poetry.lock 
 	@echo "Generating help..."

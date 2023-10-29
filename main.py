@@ -15,7 +15,7 @@ import argparse
 def main(args_videotools):
 
     parser = argparse.ArgumentParser(description='VideoTools Arguments')
-    print("\n\n"+get_completion("Mensagem de boas vindas ao programa Video Tools : ")+"\n\n")
+    print("\n\n"+get_completion("Repita 'Eu estou funcionando e sou o GPT' : ")+"\n\n")
     
 
     #convertendo de mp4 para mp3
