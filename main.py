@@ -85,8 +85,11 @@ def main(args_videotools):
 
     with open(os.path.join(destino,"transcricao.txt"),"r") as f:
         texto=f.read()
-        
-    print("texto completo: "+texto)
+        texto.split("INICIANDO TRANSRIÇÃO:")[1].split("TERMINANDO TRANSCRIÇÃO---")[0]
+
+    #gerando assuntos
+
+    gerar_assuntos(texto,destino,subjects,leng)
         
     ...
 
@@ -98,16 +101,17 @@ def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str):
         resposta=""
 
 
-        while(resposta==""):
-            resposta =get_completion(f"""
-            Leia a transcrição abaixo e corte os tempos de acordo com o assunto ({subjects} assuntos) retornando [t_inicial | t_final ] -  [Assunto]
-             Obs: os assuntos têm que estar em {leng} e não existe intersecção de tempo entre os assuntos
+        # while(resposta==""):
+        #     resposta =get_completion(f"""
+        #     Leia a transcrição abaixo e corte os tempos de acordo com o assunto ({subjects} assuntos) retornando [t_inicial | t_final ] -  [Assunto]
+        #      Obs: os assuntos têm que estar em {leng} e não existe intersecção de tempo entre os assuntos
             
-            transcrição:
-                            {texto}
-            """)
-            print("Resposta"+resposta)
+        #     transcrição:
+        #                     {texto}
+        #     """)
+        #     print("Resposta"+resposta)
 
+        
     
     with open(os.path.join(destino,"cortes.txt"),"w") as f:
         f.write(resposta)
