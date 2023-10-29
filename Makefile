@@ -11,9 +11,13 @@ install_dependencies:
 run_teste: poetry.lock 
 	@echo "Running..."
 	poetry shell
-	python3 main.py tests/teste.mp4 source
+	python3 main.py tests/teste.mp4 source -as 10 
 
 generate_help: poetry.lock 
 	@echo "Generating help..."
 	poetry shell
 	python3 main.py --help > help.txt
+
+clean_source: 
+	@echo "Cleaning source..."
+	rm -rf source/*
