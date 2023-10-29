@@ -127,3 +127,9 @@ dmypy.json
 #mp3 wav in tests
 *.mp3
 *.wav
+
+#my achives 
+transcricao.txt
+poetry.lock
+
+
