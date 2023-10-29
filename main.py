@@ -15,7 +15,7 @@ import argparse
 def main(args_videotools):
 
     parser = argparse.ArgumentParser(description='VideoTools Arguments')
-
+    print(get_completion("Mensagem de boas vindas ao programa Video Tools : "))
     
 
     #convertendo de mp4 para mp3
@@ -100,16 +100,15 @@ def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str):
 
         resposta=""
 
+        
 
-        # while(resposta==""):
-        #     resposta =get_completion(f"""
-        #     Leia a transcrição abaixo e corte os tempos de acordo com o assunto ({subjects} assuntos) retornando [t_inicial | t_final ] -  [Assunto]
-        #      Obs: os assuntos têm que estar em {leng} e não existe intersecção de tempo entre os assuntos
-            
-        #     transcrição:
-        #                     {texto}
-        #     """)
-        #     print("Resposta"+resposta)
+        while(resposta==""):
+            resposta =get_completion(f"""
+            Leia a transcrição abaixo e SUMARIZE EM POUCAS PALAVRAS ({subjects} assuntos) retornando [t_inicial | t_final ] -  [Assunto]
+            transcrição:
+                            {texto}
+            """)
+            print("Resposta"+resposta)
 
         
     

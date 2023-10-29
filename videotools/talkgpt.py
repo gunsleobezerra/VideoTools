@@ -1,21 +1,21 @@
 import g4f
 
-def get_completion(prompt:str):
-    allowed_models = [
-    'code-davinci-002',
-    'text-ada-001',
-    'text-babbage-001',
-    'text-curie-001',
-    'text-davinci-002',
-    'text-davinci-003'
-]
 
-    response = g4f.Completion.create(
-        model  = 'text-davinci-003',
-        prompt = prompt)
     
-    return  str(response)
 
 
+def get_completion(prompt:str):
+    # streamed completion
+    response=""
+    
 
+    
 
+    # normal response
+    response = g4f.ChatCompletion.create(
+        model=g4f.models.gpt_4,
+        messages=[{"role": "user", "content": prompt}],
+    )  # alternative model setting
+
+    
+    return response

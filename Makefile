@@ -7,6 +7,7 @@ install_dependencies:
 	rm -rf poetry.lock
 	poetry install
 	pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
+	pip install g4f
 	poetry shell
 
 run_teste: poetry.lock 
@@ -17,7 +18,7 @@ run_teste: poetry.lock
 run_teste_url: poetry.lock 
 	@echo "Running..."
 	poetry shell
-	python3 main.py -url https://www.youtube.com/watch?v=Gnh3dwps_jE -d source -as 10 -tc 10000
+	python3 main.py -url https://www.youtube.com/watch?v=HsbvMexL1C8 -d source -as 10 -tc 10000
 
 generate_help: poetry.lock 
 	@echo "Generating help..."
