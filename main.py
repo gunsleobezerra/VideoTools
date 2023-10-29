@@ -1,4 +1,5 @@
 import os, sys
+import pprint
 from videotools.converter import *
 import videotools.chunks as chunks
 from videotools.transcribe import *
@@ -7,14 +8,32 @@ import os
 import moviepy.editor as mp
 from pydub import AudioSegment
 from pydub.utils import make_chunks
+import argparse
 
-def main(args):
+def main(args_videotools):
+
+    parser = argparse.ArgumentParser(description='VideoTools Arguments')
+
+    
+
     #convertendo de mp4 para mp3
-    videoMp4=args[1]
-    destino=args[2]
+    # videoMp4=args[1]
+    parser.add_argument('videoMp4', type=str, help='video path')
+    
+    # destino=args[2]
+    parser.add_argument('destino', type=str, help='destination path')
+    parser.add_argument('-leng','-lg', type=str, help='language')
+    parser.add_argument('-timechunk','-tc', type=int, help='timechunk')
+    args_videotools = parser.parse_args()
+
+    print(args_videotools.videoMp4)
+
+    videoMp4=args_videotools.videoMp4
+    destino=args_videotools.destino
 
     try:
-        leng=args[3]
+        # leng=args[3]
+        leng=args_videotools.leng if args_videotools.leng else "pt-BR"
     except:
         leng="pt-BR"
         #ingles: en-US
@@ -24,7 +43,7 @@ def main(args):
         #italiano: it-IT
 
     try:
-        timechunk=int(args[4])
+        timechunk= args_videotools.timechunk if args_videotools.timechunk else 30000  
         print(str(timechunk) + "timechunk")
     except:
         timechunk=30000
