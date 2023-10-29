@@ -12,3 +12,8 @@ run_teste: poetry.lock
 	@echo "Running..."
 	poetry shell
 	python3 main.py tests/teste.mp4 source
+
+generate_help: poetry.lock 
+	@echo "Generating help..."
+	poetry shell
+	python3 main.py --help > help.txt
