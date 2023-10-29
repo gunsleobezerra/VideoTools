@@ -1,0 +1,16 @@
+usage: main.py [-h] [-leng LENG] [-timechunk TIMECHUNK] [-assuntos ASSUNTOS]
+               videoMp4 destino
+
+VideoTools Arguments
+
+positional arguments:
+  videoMp4              video path
+  destino               destination path
+
+options:
+  -h, --help            show this help message and exit
+  -leng LENG, -lg LENG  language
+  -timechunk TIMECHUNK, -tc TIMECHUNK
+                        timechunk
+  -assuntos ASSUNTOS, -as ASSUNTOS
+                        Number of subjects

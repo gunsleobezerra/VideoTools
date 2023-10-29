@@ -24,6 +24,8 @@ def main(args_videotools):
     parser.add_argument('destino', type=str, help='destination path')
     parser.add_argument('-leng','-lg', type=str, help='language')
     parser.add_argument('-timechunk','-tc', type=int, help='timechunk')
+    parser.add_argument('-assuntos','-as', type=int, help='Number of subjects')
+    
     args_videotools = parser.parse_args()
 
     print(args_videotools.videoMp4)
@@ -47,7 +49,12 @@ def main(args_videotools):
         print(str(timechunk) + "timechunk")
     except:
         timechunk=30000
-        
+
+    try:
+        subjects= args_videotools.assuntos if args_videotools.assuntos else 3
+    except:
+        subjects=3
+
     #video path example: windows:  "C:\\Users\\User\\Desktop\\video.mp4" linux: "/home/user/video.mp4"
 
     video_name = os.path.splitext(videoMp4)[0]
@@ -82,7 +89,8 @@ def main(args_videotools):
 
         while(resposta==""):
             resposta =get_completion(f"""
-            Leia a transcrição abaixo e corte os tempos de acordo com o assunto (3 assuntos) retornando [t_inicial | t_final ] -  Assunto em {leng}
+            Leia a transcrição abaixo e corte os tempos de acordo com o assunto ({subjects} assuntos) retornando [t_inicial | t_final ] -  [Assunto]
+             Obs: os assuntos têm que estar em {leng} e não existe intersecção de tempo entre os assuntos
             
             transcrição:
                             {texto}
