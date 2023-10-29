@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Transcribe and Cut Videos"
 authors = ["Leo Bezerra"]
 license = "MIT"
-readme = "README.md"
+
 
 [tool.poetry.dependencies]
 
