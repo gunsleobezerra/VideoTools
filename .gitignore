@@ -133,3 +133,6 @@ transcricao.txt
 poetry.lock
 
 
+source/cortes.txt
+poetry.lock
+source/transcricao.txt
