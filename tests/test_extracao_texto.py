@@ -41,7 +41,9 @@ class TestGeracaodeTexto(unittest.TestCase):
                 f.write(geratexto(os.path.relpath("./chunks")))
              
             pass
-
+        def test_gera_texto_whisper(self):
+            geratexto_whisper(os.path.realpath("tests/teste.mp4"),language="pt")
+            
     
 
 if __name__ == '__main__':

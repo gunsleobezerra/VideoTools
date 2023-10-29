@@ -6,6 +6,7 @@ install_dependencies:
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 	rm -rf poetry.lock
 	poetry install
+	pip install torch==2.0.1 torchvision==0.15.2 torchaudio==2.0.2 --index-url https://download.pytorch.org/whl/cu118
 	poetry shell
 
 run_teste: poetry.lock 

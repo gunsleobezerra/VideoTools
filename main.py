@@ -85,19 +85,24 @@ def main(args_videotools):
     converter(videoMp4,"mp4","mp3", os.path.relpath(destino))
 
     #mp3_to_wav(destino,destino)
-    converter(os.path.join(destino,video_name+".mp3"),"mp3","wav", os.path.relpath(destino))
+    #converter(os.path.join(destino,video_name+".mp3"),"mp3","wav", os.path.relpath(destino))
 
     #criando chunks
     
-    chunks.makeChunks(os.path.join(destino,video_name+".wav"),chunk_size=timechunk,destinoNome=os.path.join(destino,"chunks"))
+    #chunks.makeChunks(os.path.join(destino,video_name+".wav"),chunk_size=timechunk,destinoNome=os.path.join(destino,"chunks"))
 
     #transcrevendo
 
+    ARQUIVO_MP3 = os.path.join(destino,video_name+".mp3")
+    leng_no_=leng.split("-")[0]
+
+    texto = geratexto_whisper(ARQUIVO_MP3,leng_no_)
+
     with open(os.path.join(destino,"transcricao.txt"),"w") as f:
-        f.write(geratexto(os.path.join(destino,"chunks"),leng=leng))
+        f.write(texto)
     
-    #gerando assuntos
-    gerar_assuntos(os.path.join(destino,"transcricao.txt"),destino,subjects,leng)
+
+    
     
         
     ...

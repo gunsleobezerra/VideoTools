@@ -20,7 +20,7 @@ class TestYoutbe(unittest.TestCase):
         yt = YouTube("https://www.youtube.com/watch?v=D_0R9e6hqVs")
 
        
-        d_video = 
+        d_video = yt.streams.filter(progressive=True, file_extension='mp4').order_by('resolution').desc().first()
 
         #RENAME
         

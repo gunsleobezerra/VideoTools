@@ -6,6 +6,9 @@ from pydub import AudioSegment
 from pydub.utils import make_chunks
 from tqdm import tqdm
 import os, sys
+import whisper
+import argparse
+
 
 from .chunks import timechunk
 
@@ -94,3 +97,38 @@ def geratexto(chunks_path:str, chunk_size:int=timechunk, forGPT:bool=False,leng=
     for key in sorted(text_dict.keys()):
         text+= calcula_tempo(key)+" -- "+text_dict[key]+"\n\n"
     return text
+
+def geratexto_whisper(mp3_archive:str,language:str):
+  model = whisper.load_model("base")
+  print("INICIANDO TRANSRIÇÃO:")
+  result = model.transcribe(mp3_archive,verbose=True,language=language,word_timestamps=True)
+  print("TERMINANDO TRANSCRIÇÃO---")
+  return result
+
+def main():
+  parser = argparse.ArgumentParser(description='Transcribe video to text')
+  parser.add_argument("-mp3", type=str, help="mp3 archive")
+  parser.add_argument("-lang", type=str, help="language")
+
+  try:
+    args = parser.parse_args()
+    print(args.mp3)
+    print(args.lang)
+    geratexto_whisper(args.mp3,args.lang)
+  except:
+    print("ERROR")
+
+  pass
+     
+   
+
+   
+    
+
+if __name__ == "__main__":
+    
+  import sys
+  sys.exit(main(sys.argv))
+
+  pass
+
