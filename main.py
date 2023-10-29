@@ -74,24 +74,7 @@ def main(args_videotools):
 
     #video path example: windows:  "C:\\Users\\User\\Desktop\\video.mp4" linux: "/home/user/video.mp4"
 
-    
-    
-
-   
-
-    
-
-    #mp4_to_mp3(videoMp4,destino)
     converter(videoMp4,"mp4","mp3", os.path.relpath(destino))
-
-    #mp3_to_wav(destino,destino)
-    #converter(os.path.join(destino,video_name+".mp3"),"mp3","wav", os.path.relpath(destino))
-
-    #criando chunks
-    
-    #chunks.makeChunks(os.path.join(destino,video_name+".wav"),chunk_size=timechunk,destinoNome=os.path.join(destino,"chunks"))
-
-    #transcrevendo
 
     ARQUIVO_MP3 = os.path.join(destino,video_name+".mp3")
     leng_no_=leng.split("-")[0]
@@ -99,8 +82,9 @@ def main(args_videotools):
     texto = geratexto_whisper(ARQUIVO_MP3,leng_no_)
 
     with open(os.path.join(destino,"transcricao.txt"),"w") as f:
-        f.write(texto)
-    
+        f.write(texto["text"])
+    with open(os.path.join(destino,"transcricao.py"),"w") as f:
+        f.write(str(texto))
 
     
     
