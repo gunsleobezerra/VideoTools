@@ -11,7 +11,12 @@ install_dependencies:
 run_teste: poetry.lock 
 	@echo "Running..."
 	poetry shell
-	python3 main.py tests/teste.mp4 source -as 10 
+	python3 main.py -v tests/teste.mp4 -d source -as 10 
+
+run_teste_url: poetry.lock 
+	@echo "Running..."
+	poetry shell
+	python3 main.py -url https://www.youtube.com/watch?v=Gnh3dwps_jE -d source -as 10 -tc 10000
 
 generate_help: poetry.lock 
 	@echo "Generating help..."
