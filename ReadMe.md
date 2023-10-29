@@ -14,8 +14,8 @@ To use this project you need first install ffmpeg video processor library
     Add the bin Folder to Path: https://phoenixnap.com/kb/ffmpeg-windows
 
 ## Usage:
-    python main.py --help
-    usage: main.py [-h] [-leng LENG] [-timechunk TIMECHUNK] videoMp4 destino
+   usage: main.py [-h] [-leng LENG] [-timechunk TIMECHUNK] [-assuntos ASSUNTOS]
+               videoMp4 destino
 
     VideoTools Arguments
 
@@ -28,3 +28,5 @@ To use this project you need first install ffmpeg video processor library
     -leng LENG, -lg LENG  language
     -timechunk TIMECHUNK, -tc TIMECHUNK
                             timechunk
+    -assuntos ASSUNTOS, -as ASSUNTOS
+                            Number of subjects
