@@ -11,6 +11,7 @@ import moviepy.editor as mp
 from pydub import AudioSegment
 from pydub.utils import make_chunks
 import argparse
+from multiprocessing import Pool
 
 def main(args_videotools):
 
@@ -88,8 +89,74 @@ def main(args_videotools):
         texto.split("INICIANDO TRANSRIÇÃO:")[1].split("TERMINANDO TRANSCRIÇÃO---")[0]
 
     #gerando assuntos
+    we_got_it=False
 
-    gerar_assuntos(texto,destino,subjects,leng)
+    while(not we_got_it):
+        gerar_assuntos(texto,destino,subjects,leng)
+
+        #obtendo cortes
+        # [00:07.660 | 01:10.440] - Elogio e comentário sobre o livro de Vardin Rogovim e evento em Belo Horizonte.
+        # [01:10.440 | 03:09.500] - Discussão sobre a história do movimento comunista no Brasil e a influência do Stalinismo.
+        # [03:09.500 | 05:08.040] - Exploração do impacto histórico e político do Stalinismo na União Soviética, ressaltando a obra de Vadim Rogovim.
+        # [05:08.040 | 06:58.020] - Análise crítica do surgimento e efeitos do Stalinismo na história soviética e na tradição marxista.
+        # [06:58.020 | 16:53.540] - Detalhes sobre o conteúdo e a importância da obra de Rogovim, além de convite para o evento em Belo Horizonte e considerações finais.
+        cortes=[]
+        clip=[]
+        try:
+            with open(os.path.join(destino,"cortes.txt"),"r") as f:
+                linhas=f.readlines()
+                for linha in linhas:
+                    try:
+                        clip={"t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()}
+                    except:
+                        pass
+                    cortes.append(clip)
+                print("CONSEGUIU OS CORTES:")
+                print(cortes)
+
+            
+            #cortando videos e gerando clips na pasta [destino]/clips
+            print("CORTANDO VIDEOS E GERANDO CLIPS NA PASTA [destino]/clips")
+            video = mp.VideoFileClip(videoMp4)
+            if not os.path.exists(os.path.join(destino,"clips")):
+                os.makedirs(os.path.join(destino,"clips"))
+            for corte in cortes:
+                try:
+                    
+                    if(corte["t_inicial"]!="t_inicial" and corte["t_final"]!="t_final"):
+                       
+                        get_Segundos = lambda x: float(x.split(":")[0])*60+float(x.split(":")[1].split(".")[0])+float(x.split(":")[1].split(".")[1])/1000
+                        t_inicial=corte["t_inicial"]
+                        t_final=corte["t_final"]
+                        #coloca os tempos no padrão 00:00:00.00
+                        if(len(t_inicial.split(":"))==2):
+                            t_inicial="00:"+t_inicial
+                        
+
+                        print(f"Cortando de {t_inicial} até {t_final} -  clip: {corte['assunto']}")
+                        
+                        clip = video.subclip(t_inicial,t_final)
+                        #nome do arquivo encodeado para tirar caracteres especiais
+                        nome_arquivo=corte["assunto"].encode('ascii', 'ignore').decode('ascii')
+                        #tira todos os caracteres especiais
+                        nome_arquivo = ''.join(e for e in nome_arquivo if e.isalnum() or e==" ")
+
+
+                        nome_clip=os.path.join(destino,"clips",nome_arquivo.replace(" ","_")+".mp4")
+                        
+                        #utilizando multiprocessing para cortar os videos
+                        clip.write_videofile(nome_clip,codec="libx264",threads=4)
+                        
+            
+                except Exception as e:
+                    print("\n\nerro ao cortar o video : "+corte["assunto"]+"\n\n")
+                    print(e)
+                    continue
+            print("CORTES COMPLETOS!!")
+            we_got_it=True
+        except Exception as e:
+            print("erro ao obter os cortes, tente novamente: "+str(e))
+            we_got_it=False
         
     ...
 
@@ -104,9 +171,13 @@ def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str):
 
         while(resposta==""):
             resposta =get_completion(f"""
-            Leia a transcrição abaixo e SUMARIZE EM POUCAS PALAVRAS ({subjects} assuntos) retornando [t_inicial | t_final ] -  [Assunto]
+            Leia a transcrição abaixo e SUMARIZE EM POUCAS PALAVRAS ({subjects} assuntos) retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
+            
             transcrição:
                             {texto}
+
+            LEMBRE-SE DE RETORNAR EXATAMENTE NO PADRÃO [t_inicial | t_final ] -  [Assunto] E EM {leng}!
+            POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
             """)
             print("Resposta"+resposta)
 
