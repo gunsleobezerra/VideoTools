@@ -160,31 +160,53 @@ def main(args_videotools):
         
     ...
 
-def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str):
+def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str,max_length:int=200):
     #obtendo cortes
-    with open(os.path.join(destino,"transcricao.txt"),"r") as f:
-        texto=f.read()
 
-        resposta=""
+    #contando linhas da transcrição
+    linhas = transcricao.split("\n")
+    respostaFinal=""
+    
+    
 
+    for i in range(0,len(linhas),max_length):
+        #obtendo a parte
+        parte = linhas[i:i+max_length]
+        #escrevendo em um arquivo
+        with open(os.path.join(destino,"transcricao.txt"),"w") as f:
+            f.write("\n".join(parte))
+        #gerando assuntos
         
 
-        while(resposta==""):
-            resposta =get_completion(f"""
-            Leia a transcrição abaixo e SUMARIZE EM POUCAS PALAVRAS ({subjects} assuntos) retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
+        with open(os.path.join(destino,"transcricao.txt"),"r") as f:
+            texto=f.read()
+
+            resposta=""
+
             
-            transcrição:
-                            {texto}
 
-            LEMBRE-SE DE RETORNAR EXATAMENTE NO PADRÃO [t_inicial | t_final ] -  [Assunto] E EM {leng}!
-            POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
-            """)
-            print("Resposta"+resposta)
+            while(resposta==""):
+                resposta =get_completion(f"""
+                Leia a transcrição abaixo e SUMARIZE EM POUCAS PALAVRAS ({subjects} assuntos) retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
+                
+                transcrição:
+                                {texto}
 
+                LEMBRE-SE DE RETORNAR EXATAMENTE NO PADRÃO [t_inicial | t_final ] -  [Assunto] E EM {leng}!
+                POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
+                """)
+                print("Resposta"+resposta)
+
+            respostaFinal+=resposta+"\n"
+
+            #tirar linhas em branco
+            
+
+        
         
     
     with open(os.path.join(destino,"cortes.txt"),"w") as f:
-        f.write(resposta)
+        f.write(respostaFinal)
 
 if __name__ == '__main__':
     import sys

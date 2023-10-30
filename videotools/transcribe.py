@@ -101,7 +101,7 @@ def geratexto(chunks_path:str, chunk_size:int=timechunk, forGPT:bool=False,leng=
 def geratexto_whisper(mp3_archive:str,language:str):
   model = whisper.load_model("base")
   print("INICIANDO TRANSRIÇÃO:")
-  result = model.transcribe(mp3_archive,verbose=True,language=language,word_timestamps=True)
+  result = model.transcribe(mp3_archive,verbose=True,language=language)
   print("TERMINANDO TRANSCRIÇÃO---")
   return result
 
