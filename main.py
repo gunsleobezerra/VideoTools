@@ -92,7 +92,11 @@ def main(args_videotools):
     we_got_it=False
 
     while(not we_got_it):
-        gerar_assuntos(texto,destino,subjects,leng)
+        a_geracao=gerar_assuntos(texto,destino,subjects,leng)
+        b_geracao=gerar_assuntos(a_geracao,destino,subjects,leng)
+        
+        
+        
 
         #obtendo cortes
         # [00:07.660 | 01:10.440] - Elogio e comentário sobre o livro de Vardin Rogovim e evento em Belo Horizonte.
@@ -207,6 +211,7 @@ def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str,max_length:
     
     with open(os.path.join(destino,"cortes.txt"),"w") as f:
         f.write(respostaFinal)
+    return respostaFinal
 
 if __name__ == '__main__':
     import sys
