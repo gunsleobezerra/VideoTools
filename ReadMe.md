@@ -17,6 +17,8 @@ To use this project you need first install ffmpeg video processor library
    usage: main.py [-h] [-leng LENG] [-timechunk TIMECHUNK] [-assuntos ASSUNTOS]
                videoMp4 destino
 
+         [-url ]  -d source -as 5
+
     VideoTools Arguments
 
     positional arguments:
@@ -30,3 +32,5 @@ To use this project you need first install ffmpeg video processor library
                             timechunk
     -assuntos ASSUNTOS, -as ASSUNTOS
                             Number of subjects
+    -url URL, -u URL      url of video on youtube
+
