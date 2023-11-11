@@ -3,6 +3,7 @@
 install_dependencies:
 	@echo "Installing dependencies..."
 	sudo apt-get install ffmpeg
+	sudo apt-get install python3-poetry
 	curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.3/install.sh | bash
 	rm -rf poetry.lock
 	poetry install
