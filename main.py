@@ -93,7 +93,15 @@ def main(args_videotools):
 
     while(not we_got_it):
         a_geracao=gerar_assuntos(texto,destino,subjects,leng)
-        b_geracao=gerar_assuntos(a_geracao,destino,subjects,leng)
+        
+        resposta =get_completion(f""" 
+               
+                                {a_geracao}
+
+                LEMBRE-SE DE RETORNAR EXATAMENTE NO PADRÃO [t_inicial | t_final ] -  [Assunto] E EM {leng}!
+                POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
+                """)
+        print("Resposta"+resposta)
         
         
         
