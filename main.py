@@ -114,61 +114,63 @@ def main(args_videotools):
         # [06:58.020 | 16:53.540] - Detalhes sobre o conteúdo e a importância da obra de Rogovim, além de convite para o evento em Belo Horizonte e considerações finais.
         cortes=[]
         clip=[]
-        try:
-            with open(os.path.join(destino,"cortes.txt"),"r") as f:
-                linhas=f.readlines()
-                for linha in linhas:
+        with open(os.path.join(destino,"cortes_resumo.txt"),"w") as fr:
+            try:
+                with open(os.path.join(destino,"cortes.txt"),"r") as f:
+                    linhas=f.readlines()
+                    for linha in linhas:
+                        try:
+                            clip={"t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()}
+                        except:
+                            pass
+                        cortes.append(clip)
+                        fr.write(f"""{clip['t_inicial']} - {clip['assunto']} """)
+                    print("CONSEGUIU OS CORTES:")
+                    print(cortes)
+
+                
+                #cortando videos e gerando clips na pasta [destino]/clips
+                print("CORTANDO VIDEOS E GERANDO CLIPS NA PASTA [destino]/clips")
+                video = mp.VideoFileClip(videoMp4)
+                if not os.path.exists(os.path.join(destino,"clips")):
+                    os.makedirs(os.path.join(destino,"clips"))
+                for corte in cortes:
                     try:
-                        clip={"t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()}
-                    except:
-                        pass
-                    cortes.append(clip)
-                print("CONSEGUIU OS CORTES:")
-                print(cortes)
-
-            
-            #cortando videos e gerando clips na pasta [destino]/clips
-            print("CORTANDO VIDEOS E GERANDO CLIPS NA PASTA [destino]/clips")
-            video = mp.VideoFileClip(videoMp4)
-            if not os.path.exists(os.path.join(destino,"clips")):
-                os.makedirs(os.path.join(destino,"clips"))
-            for corte in cortes:
-                try:
-                    
-                    if(corte["t_inicial"]!="t_inicial" and corte["t_final"]!="t_final"):
-                       
-                        get_Segundos = lambda x: float(x.split(":")[0])*60+float(x.split(":")[1].split(".")[0])+float(x.split(":")[1].split(".")[1])/1000
-                        t_inicial=corte["t_inicial"]
-                        t_final=corte["t_final"]
-                        #coloca os tempos no padrão 00:00:00.00
-                        if(len(t_inicial.split(":"))==2):
-                            t_inicial="00:"+t_inicial
                         
-
-                        print(f"Cortando de {t_inicial} até {t_final} -  clip: {corte['assunto']}")
+                        if(corte["t_inicial"]!="t_inicial" and corte["t_final"]!="t_final"):
                         
-                        clip = video.subclip(t_inicial,t_final)
-                        #nome do arquivo encodeado para tirar caracteres especiais
-                        nome_arquivo=corte["assunto"].encode('ascii', 'ignore').decode('ascii')
-                        #tira todos os caracteres especiais
-                        nome_arquivo = ''.join(e for e in nome_arquivo if e.isalnum() or e==" ")
+                            get_Segundos = lambda x: float(x.split(":")[0])*60+float(x.split(":")[1].split(".")[0])+float(x.split(":")[1].split(".")[1])/1000
+                            t_inicial=corte["t_inicial"]
+                            t_final=corte["t_final"]
+                            #coloca os tempos no padrão 00:00:00.00
+                            if(len(t_inicial.split(":"))==2):
+                                t_inicial="00:"+t_inicial
+                            
+
+                            print(f"Cortando de {t_inicial} até {t_final} -  clip: {corte['assunto']}")
+                            
+                            clip = video.subclip(t_inicial,t_final)
+                            #nome do arquivo encodeado para tirar caracteres especiais
+                            nome_arquivo=corte["assunto"].encode('ascii', 'ignore').decode('ascii')
+                            #tira todos os caracteres especiais
+                            nome_arquivo = ''.join(e for e in nome_arquivo if e.isalnum() or e==" ")
 
 
-                        nome_clip=os.path.join(destino,"clips",nome_arquivo.replace(" ","_")+".mp4")
-                        
-                        #utilizando multiprocessing para cortar os videos
-                        clip.write_videofile(nome_clip,codec="libx264",threads=4)
-                        
-            
-                except Exception as e:
-                    print("\n\nerro ao cortar o video : "+corte["assunto"]+"\n\n")
-                    print(e)
-                    continue
-            print("CORTES COMPLETOS!!")
-            we_got_it=True
-        except Exception as e:
-            print("erro ao obter os cortes, tente novamente: "+str(e))
-            we_got_it=False
+                            nome_clip=os.path.join(destino,"clips",nome_arquivo.replace(" ","_")+".mp4")
+                            
+                            #utilizando multiprocessing para cortar os videos
+                            clip.write_videofile(nome_clip,codec="libx264",threads=4)
+                            
+                
+                    except Exception as e:
+                        print("\n\nerro ao cortar o video : "+corte["assunto"]+"\n\n")
+                        print(e)
+                        continue
+                print("CORTES COMPLETOS!!")
+                we_got_it=True
+            except Exception as e:
+                print("erro ao obter os cortes, tente novamente: "+str(e))
+                we_got_it=False
         
     ...
 
