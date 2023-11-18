@@ -13,7 +13,7 @@ def get_completion(prompt:str):
 
     # normal response
     response = g4f.ChatCompletion.create(
-        model=g4f.models.gpt_35_turbo_16k_0613,
+        model=g4f.models.gpt_4_32k_0613,
         messages=[{"role": "user", "content": prompt}],
     )  # alternative model setting
 
