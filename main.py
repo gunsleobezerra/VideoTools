@@ -45,7 +45,7 @@ def main(args_videotools):
         print(args_videotools.url)
         print(video_name)
         dowload_youtube(args_videotools.url,video_name,destino)
-        print("baixou!")
+        #print("baixou!")
         videoMp4=os.path.join(destino,video_name+".mp4")
     else:
         video_name = os.path.splitext(videoMp4)[0]
@@ -93,15 +93,18 @@ def main(args_videotools):
 
     a_geracao=gerar_assuntos(texto,destino,subjects,leng)
     while(not we_got_it):
-        
-        resposta =get_completion(f""" SUMARIZE ESSES ASSUNTOS SEJA EXATO E COM POUCAS PALAVRAS E DIVIDA EM {subjects} ASSUNTOS retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
+        print("\n\n\nTENTANDO IDENTIFICAR CORTES!! ")
+        texto_for_gpt=f""" SUMARIZE ESSES ASSUNTOS SEJA EXATO E COM POUCAS PALAVRAS E DIVIDA EM {subjects} ASSUNTOS retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
                
                                 {a_geracao}
 
                 LEMBRE-SE DE RETORNAR EXATAMENTE NO PADRÃO [t_inicial | t_final ] -  [Assunto] E EM {leng}!
                 POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
-                """)
-        print("Resposta"+resposta)
+                """
+        with open(os.path.join(destino,"last_send.txt"),"w") as f:
+            f.write(texto_for_gpt)
+        resposta =get_completion(texto_for_gpt)
+        print("Resposta:\n\n"+resposta+"\n\n")
 
         with open(os.path.join(destino,"cortes.txt"),"w") as f:
             f.write(resposta)
@@ -172,7 +175,8 @@ def main(args_videotools):
                 print("CORTES COMPLETOS!!")
                 we_got_it=True
             except Exception as e:
-                print("erro ao obter os cortes, tente novamente: "+str(e))
+                print("\n\nerro ao obter os cortes, tente novamente: "+str(e))
+                print("Tentando Novamente!!")
                 we_got_it=False
         
     ...
@@ -203,6 +207,7 @@ def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str,max_length:
             
 
             while(resposta==""):
+
                 resposta =get_completion(f"""
                 Leia a transcrição abaixo e SUMARIZE EM POUCAS PALAVRAS ({subjects} assuntos) retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
                 
@@ -212,7 +217,6 @@ def gerar_assuntos(transcricao:str,destino:str,subjects:int,leng:str,max_length:
                 LEMBRE-SE DE RETORNAR EXATAMENTE NO PADRÃO [t_inicial | t_final ] -  [Assunto] E EM {leng}!
                 POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
                 """)
-                print("Resposta"+resposta)
 
             respostaFinal+=resposta+"\n"
 
