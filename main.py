@@ -91,10 +91,10 @@ def main(args_videotools):
     #gerando assuntos
     we_got_it=False
 
+    a_geracao=gerar_assuntos(texto,destino,subjects,leng)
     while(not we_got_it):
-        a_geracao=gerar_assuntos(texto,destino,subjects,leng)
         
-        resposta =get_completion(f""" 
+        resposta =get_completion(f""" SUMARIZE ESSES ASSUNTOS SEJA EXATO E COM POUCAS PALAVRAS E DIVIDA EM {subjects} ASSUNTOS retornando EXATAMENTE [t_inicial | t_final ] -  [Assunto]
                
                                 {a_geracao}
 
@@ -102,6 +102,9 @@ def main(args_videotools):
                 POIS EU VOU PEGAR OS CORTES USANDO ESSA EXPRESSÃO: "t_inicial":linha.split("|")[0].split("[")[1].split("]")[0].strip(),"t_final":linha.split("|")[1].split("]")[0].strip(),"assunto":linha.split("|")[1].split("]")[1].strip()
                 """)
         print("Resposta"+resposta)
+
+        with open(os.path.join(destino,"cortes.txt"),"w") as f:
+            f.write(resposta)
         
         
         
@@ -124,7 +127,7 @@ def main(args_videotools):
                         except:
                             pass
                         cortes.append(clip)
-                        fr.write(f"""{clip['t_inicial']} - {clip['assunto']} """)
+                        fr.write(f"""{clip['t_inicial']} - {clip['assunto']} \n""")
                     print("CONSEGUIU OS CORTES:")
                     print(cortes)
 
